@@ -18,7 +18,6 @@ import ResourcePicker from '../../components/booking/ResourcePicker';
 import DynamicListField from '../../components/booking/DynamicListField';
 import PeoplePicker from '../../components/booking/PeoplePicker';
 import FileUploadField from '../../components/booking/FileUploadField';
-import Navbar from '../../components/Navbar';
 
 // ─── Section header ────────────────────────────────────────────────────────────
 function SectionHeader({ icon, label }) {
@@ -171,12 +170,20 @@ export default function BookingFormPage() {
     } catch (err) {
       const apiErr = err.response?.data;
       if (apiErr?.data && typeof apiErr.data === 'object') {
-        setErrors(apiErr.data);
+        // Remap cross-field DTO validation errors to the field the user can actually see.
+        // The backend's @AssertTrue isTimeRangeValid() produces key "timeRangeValid" which
+        // isn't bound to any input; map it to "endTime" so the error shows on step 0.
+        const remapped = { ...apiErr.data };
+        if (remapped.timeRangeValid) {
+          remapped.endTime = remapped.timeRangeValid;
+          delete remapped.timeRangeValid;
+        }
+        setErrors(remapped);
         // Jump to first step with error
         const step1Fields = ['resourceId','bookingDate','startTime','endTime'];
         const step2Fields = ['eventName','eventDomain','participantsCount','objectives','outcomes'];
         const step3Fields = ['coordinators','supportingFaculty'];
-        const first = Object.keys(apiErr.data)[0];
+        const first = Object.keys(remapped)[0];
         if (step1Fields.includes(first)) setStep(0);
         else if (step2Fields.includes(first)) setStep(1);
         else if (step3Fields.includes(first)) setStep(2);
@@ -416,9 +423,8 @@ export default function BookingFormPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <Navbar />
       {/* Top banner */}
-      <Box sx={{ background: 'linear-gradient(135deg,#1565C0,#0D47A1)', px: { xs: 2, sm: 4 }, pt: { xs: 10, sm: 12 }, pb: 3 }}>
+      <Box sx={{ background: 'linear-gradient(135deg,#1565C0,#0D47A1)', px: { xs: 2, sm: 4 }, py: 3 }}>
         <Box sx={{ maxWidth: 860, mx: 'auto' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
             <SchoolRounded sx={{ color: 'white', fontSize: 20 }} />

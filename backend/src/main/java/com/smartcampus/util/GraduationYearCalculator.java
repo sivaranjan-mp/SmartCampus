@@ -46,7 +46,7 @@ public class GraduationYearCalculator {
         int currentAcademicYearStart = resolveAcademicYearStart();
         int yearsRemaining = PROGRAM_DURATION_YEARS - yearOfStudy;
 
-        return currentAcademicYearStart + yearsRemaining + 1;
+        return currentAcademicYearStart + yearsRemaining;
     }
 
     /**
@@ -59,7 +59,7 @@ public class GraduationYearCalculator {
      */
     public int calculateFromJoinYear(int joinYear, int yearOfStudy) {
         validateYearOfStudy(yearOfStudy);
-        return joinYear + PROGRAM_DURATION_YEARS;
+        return joinYear + (PROGRAM_DURATION_YEARS - 1);
     }
 
     /**

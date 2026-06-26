@@ -25,6 +25,6 @@ export const adminApi = {
   createResource: (data) => axiosInstance.post('/admin/resources', data),
   updateResource: (id, data) => axiosInstance.put(`/admin/resources/${id}`, data),
   toggleMaintenance: (id) => axiosInstance.patch(`/admin/resources/${id}/toggle-maintenance`),
-  toggleResourceStatus: (id) => axiosInstance.patch(`/admin/resources/${id}/toggle-status`),
+  toggleResourceStatus: (id) => axiosInstance.patch(`/admin/resources/${id}/toggle-active`),
   deleteResource: (id) => axiosInstance.delete(`/admin/resources/${id}`),
 };

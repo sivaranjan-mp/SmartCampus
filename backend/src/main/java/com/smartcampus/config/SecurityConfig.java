@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration @EnableWebSecurity @EnableMethodSecurity @RequiredArgsConstructor
@@ -52,8 +53,15 @@ public class SecurityConfig {
     }
 
     @Bean public CorsConfigurationSource corsSource() {
+        // frontendUrl supports comma-separated values so you can allow both the
+        // production URL and Vercel preview URLs without redeploying the backend.
+        // e.g. FRONTEND_URL=https://smartcampus.vercel.app,https://smartcampus-git-main.vercel.app
+        List<String> allowedOrigins = Arrays.stream(frontendUrl.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
         var cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of(frontendUrl));
+        cfg.setAllowedOrigins(allowedOrigins);
         cfg.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(List.of("*")); cfg.setAllowCredentials(true); cfg.setMaxAge(3600L);
         var src = new UrlBasedCorsConfigurationSource(); src.registerCorsConfiguration("/**", cfg);

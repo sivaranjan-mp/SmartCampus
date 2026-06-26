@@ -28,7 +28,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(err -> errors.put(((FieldError) err).getField(), err.getDefaultMessage()));
+        ex.getBindingResult().getAllErrors().forEach(err -> {
+            // getAllErrors() returns both FieldError (property constraints) and ObjectError
+            // (class-level constraints). Cast only when safe; fall back to objectName for
+            // class-level ones so a future @ScriptAssert / @AssertTrue on the class itself
+            // doesn't produce a ClassCastException → 500 instead of the intended 400.
+            if (err instanceof FieldError fe) {
+                errors.put(fe.getField(), fe.getDefaultMessage());
+            } else {
+                errors.put(err.getObjectName(), err.getDefaultMessage());
+            }
+        });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ApiResponse.<Map<String,String>>builder().success(false).message("Validation failed").data(errors).build());
     }

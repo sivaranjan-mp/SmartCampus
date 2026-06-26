@@ -1,14 +1,8 @@
 -- ============================================================
--- SmartCampus Database Setup
+-- SmartCampus Database Setup (PostgreSQL / Supabase)
 -- Run this ONCE before starting the application, OR just let
 -- Hibernate create everything automatically — see note below.
 -- ============================================================
-
-CREATE DATABASE IF NOT EXISTS smartcampus_db
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
-
-USE smartcampus_db;
 
 -- spring.jpa.hibernate.ddl-auto=update means Hibernate will create/update
 -- all tables automatically on application startup based on the JPA
@@ -19,7 +13,7 @@ USE smartcampus_db;
 
 -- Seed: Default Admin Account
 -- Password: Admin@1234 (BCrypt encoded)
-INSERT IGNORE INTO users
+INSERT INTO users
     (full_name, email, register_number, password, role, department_name, phone_number,
      is_verified, is_active, created_at, updated_at)
 VALUES (
@@ -34,4 +28,5 @@ VALUES (
     TRUE,
     NOW(),
     NOW()
-);
+)
+ON CONFLICT (email) DO NOTHING;

@@ -24,10 +24,10 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
     @Query("""
            SELECT r FROM Resource r LEFT JOIN r.departmentOwner d WHERE
              (:search IS NULL
-               OR LOWER(r.name)         LIKE LOWER(CONCAT('%',:search,'%'))
-               OR LOWER(r.resourceCode) LIKE LOWER(CONCAT('%',:search,'%'))
-               OR LOWER(r.location)     LIKE LOWER(CONCAT('%',:search,'%'))
-               OR LOWER(r.buildingName) LIKE LOWER(CONCAT('%',:search,'%')))
+               OR LOWER(r.name)         LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+               OR LOWER(r.resourceCode) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+               OR LOWER(r.location)     LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+               OR LOWER(r.buildingName) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
              AND (:category          IS NULL OR r.category          = :category)
              AND (:scope             IS NULL OR r.scope             = :scope)
              AND (:approvalAuthority IS NULL OR r.approvalAuthority = :approvalAuthority)

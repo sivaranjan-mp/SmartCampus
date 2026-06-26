@@ -21,6 +21,7 @@ import { CATEGORY_LABELS } from '../../utils/resourceConstants';
 import {
   Dialog, DialogActions, DialogContent, DialogTitle, TextField,
 } from '@mui/material';
+import Navbar from '../../components/Navbar';
 
 // ─── Status chip ───────────────────────────────────────────────────────────────
 function StatusChip({ status }) {
@@ -207,8 +208,9 @@ export default function MyBookingsPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Navbar />
       {/* Header */}
-      <Box sx={{ background: 'linear-gradient(135deg,#1565C0,#0D47A1)', px: { xs: 2, sm: 4 }, py: 3 }}>
+      <Box sx={{ background: 'linear-gradient(135deg,#1565C0,#0D47A1)', px: { xs: 2, sm: 4 }, pt: { xs: 10, sm: 12 }, pb: 3 }}>
         <Box sx={{ maxWidth: 1100, mx: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
           <Box>
             <Typography variant="h5" sx={{ fontWeight: 800, color: 'white' }}>My Bookings</Typography>

@@ -22,7 +22,10 @@ import BookingFormPage from './pages/booking/BookingFormPage';
 import MyBookingsPage  from './pages/booking/MyBookingsPage';
 
 import { getDashboardPath } from './utils/roleUtils';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Container, Grid, Card } from '@mui/material';
+import { AddRounded, HistoryRounded, GavelRounded } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
 
 function RootRedirect() {
   const { isAuthenticated, user } = useAuth();
@@ -31,18 +34,49 @@ function RootRedirect() {
     : <Navigate to="/login" replace />;
 }
 
-function PlaceholderDashboard() {
+function UserDashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
   return (
-    <Box sx={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#F0F4FF' }}>
-      <Box sx={{ textAlign:'center' }}>
-        <Typography variant="h4" fontWeight={800} color="primary.main" mb={1}>
-          Welcome, {user?.fullName?.split(' ')[0]}
-        </Typography>
-        <Typography color="text.secondary">
-          {user?.role} Dashboard — coming in the next module
-        </Typography>
-      </Box>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Navbar />
+      <Container maxWidth="md" sx={{ pt: { xs: 12, sm: 14 }, pb: 4 }}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" fontWeight={800} color="primary.main" mb={2}>
+            Welcome, {user?.fullName?.split(' ')[0]}
+          </Typography>
+          <Typography color="text.secondary" variant="h6">
+            SmartCampus Resource Booking Portal
+          </Typography>
+        </Box>
+        
+        <Grid container spacing={3} justifyContent="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ height: '100%', textAlign: 'center', p: 4, cursor: 'pointer', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 8px 24px rgba(21,101,192,0.12)' }, transition: 'all 0.2s', border: '1px solid', borderColor: 'divider', borderRadius: 3 }} onClick={() => navigate('/bookings/new')}>
+              <AddRounded color="primary" sx={{ fontSize: 48, mb: 2 }} />
+              <Typography variant="h6" fontWeight={700}>New Booking</Typography>
+              <Typography variant="body2" color="text.secondary" mt={1}>Request a new resource or lab</Typography>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ height: '100%', textAlign: 'center', p: 4, cursor: 'pointer', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 8px 24px rgba(21,101,192,0.12)' }, transition: 'all 0.2s', border: '1px solid', borderColor: 'divider', borderRadius: 3 }} onClick={() => navigate('/bookings/my')}>
+              <HistoryRounded color="primary" sx={{ fontSize: 48, mb: 2 }} />
+              <Typography variant="h6" fontWeight={700}>My Bookings</Typography>
+              <Typography variant="body2" color="text.secondary" mt={1}>View and manage your requests</Typography>
+            </Card>
+          </Grid>
+          {user?.role === 'HOD' && (
+            <Grid item xs={12} sm={6} md={4}>
+              <Card sx={{ height: '100%', textAlign: 'center', p: 4, cursor: 'pointer', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 8px 24px rgba(21,101,192,0.12)' }, transition: 'all 0.2s', border: '1px solid', borderColor: 'divider', borderRadius: 3 }} onClick={() => navigate('/hod/approvals')}>
+                <GavelRounded color="primary" sx={{ fontSize: 48, mb: 2 }} />
+                <Typography variant="h6" fontWeight={700}>Approvals</Typography>
+                <Typography variant="body2" color="text.secondary" mt={1}>Review pending requests</Typography>
+              </Card>
+            </Grid>
+          )}
+        </Grid>
+      </Container>
     </Box>
   );
 }
@@ -59,17 +93,17 @@ export default function App() {
 
       {/* Student */}
       <Route path="/student/dashboard" element={
-        <ProtectedRoute allowedRoles={['STUDENT']}><PlaceholderDashboard /></ProtectedRoute>
+        <ProtectedRoute allowedRoles={['STUDENT']}><UserDashboard /></ProtectedRoute>
       } />
 
       {/* Faculty */}
       <Route path="/faculty/dashboard" element={
-        <ProtectedRoute allowedRoles={['FACULTY']}><PlaceholderDashboard /></ProtectedRoute>
+        <ProtectedRoute allowedRoles={['FACULTY']}><UserDashboard /></ProtectedRoute>
       } />
 
       {/* HOD */}
       <Route path="/hod/dashboard" element={
-        <ProtectedRoute allowedRoles={['HOD']}><PlaceholderDashboard /></ProtectedRoute>
+        <ProtectedRoute allowedRoles={['HOD']}><UserDashboard /></ProtectedRoute>
       } />
       <Route path="/hod/approvals" element={
         <ProtectedRoute allowedRoles={['HOD']}><HodApprovalPage /></ProtectedRoute>

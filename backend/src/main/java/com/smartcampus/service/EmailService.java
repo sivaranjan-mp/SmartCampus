@@ -3,6 +3,7 @@ package com.smartcampus.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -43,6 +44,10 @@ public class EmailService {
     @Async
     public void sendManagedUserCredentials(String to, String name, String role, String tmpPwd) {
         send(to, appName + " - Account Created", credHtml(name, role, tmpPwd));
+    }
+
+    public void sendManagedUserWelcomeEmail(String to, String name, String role, String tempPassword) {
+        sendManagedUserCredentials(to, name, role, tempPassword);
     }
 
     private void send(String to, String subject, String html) {

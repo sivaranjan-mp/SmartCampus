@@ -60,6 +60,4 @@ public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     @Query("SELECT COUNT(r) > 0 FROM Resource r WHERE r.resourceCode = :code AND r.id != :id")
     boolean codeExistsForOtherId(@Param("code") String code, @Param("id") Long id);
-
-    long countByDepartmentIdAndIsActiveTrue(Long departmentId);
 }

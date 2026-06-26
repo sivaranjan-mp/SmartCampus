@@ -151,7 +151,7 @@ public class AdminService {
         return departmentRepository.searchDepartments(search, pageable)
                 .map(dept -> {
                     DepartmentResponse resp = DepartmentResponse.from(dept);
-                    resp.setResourceCount(resourceRepository.countByDepartmentIdAndIsActiveTrue(dept.getId()));
+                    resp.setResourceCount(resourceRepository.countByDepartmentOwnerIdAndIsActiveTrue(dept.getId()));
                     resp.setUserCount(userRepository.countByDepartmentName(dept.getName()));
                     return resp;
                 });
@@ -167,7 +167,7 @@ public class AdminService {
                 .orElseThrow(() -> new SmartCampusException.NotFoundException(
                         "Department not found with id: " + id));
         DepartmentResponse resp = DepartmentResponse.from(dept);
-        resp.setResourceCount(resourceRepository.countByDepartmentIdAndIsActiveTrue(id));
+        resp.setResourceCount(resourceRepository.countByDepartmentOwnerIdAndIsActiveTrue(id));
         resp.setUserCount(userRepository.countByDepartmentName(dept.getName()));
         return resp;
     }

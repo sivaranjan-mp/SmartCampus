@@ -48,6 +48,7 @@ public class AdminService {
     //  Dashboard Stats
     // ─────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public AdminDashboardStats getDashboardStats() {
         return AdminDashboardStats.builder()
                 .totalStudents(userRepository.countByRole(Role.STUDENT))
@@ -69,12 +70,14 @@ public class AdminService {
     //  User Management
     // ─────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<UserProfileResponse> getAllUsers(String search, Role role, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return userRepository.searchUsers(search, role, pageable)
                 .map(UserProfileResponse::from);
     }
 
+    @Transactional(readOnly = true)
     public UserProfileResponse getUserById(Long userId) {
         return UserProfileResponse.from(
                 userRepository.findById(userId)
@@ -146,6 +149,7 @@ public class AdminService {
     //  Department Management
     // ─────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<DepartmentResponse> getAllDepartments(String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
         return departmentRepository.searchDepartments(search, pageable)
@@ -157,11 +161,13 @@ public class AdminService {
                 });
     }
 
+    @Transactional(readOnly = true)
     public List<DepartmentResponse> getActiveDepartments() {
         return departmentRepository.findAllByIsActiveTrueOrderByNameAsc()
                 .stream().map(DepartmentResponse::from).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public DepartmentResponse getDepartmentById(Long id) {
         Department dept = departmentRepository.findById(id)
                 .orElseThrow(() -> new SmartCampusException.NotFoundException(

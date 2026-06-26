@@ -41,6 +41,7 @@ public class BookingService {
     //  Check availability
     // ─────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public AvailabilityResponse checkAvailability(Long resourceId, LocalDate date) {
         Resource resource = findResourceOrThrow(resourceId);
 
@@ -179,6 +180,7 @@ public class BookingService {
     //  Get one (with ownership check)
     // ─────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public BookingResponse getById(Long id, String requesterEmail) {
         Booking booking = findBookingOrThrow(id);
         User    requester = findUserOrThrow(requesterEmail);
@@ -197,6 +199,7 @@ public class BookingService {
     //  My bookings
     // ─────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<BookingListItem> getMyBookings(
             String email, BookingStatus status, int page, int size) {
         User user    = findUserOrThrow(email);
@@ -240,6 +243,7 @@ public class BookingService {
     //  Download document
     // ─────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public byte[] downloadDocument(Long bookingId, Long documentId, String requesterEmail) {
         Booking booking  = findBookingOrThrow(bookingId);
         User    requester = findUserOrThrow(requesterEmail);

@@ -39,6 +39,7 @@ public class ResourceService {
     //  Stats
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public ResourceStatsResponse getStats() {
         Map<String, Long> byCategory = new LinkedHashMap<>();
         resourceRepository.countByEachCategory()
@@ -64,6 +65,7 @@ public class ResourceService {
     //  Search / list
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<ResourceResponse> search(
             String search, ResourceCategory category, ResourceScope scope,
             ApprovalAuthority approvalAuthority, Long departmentId,
@@ -85,6 +87,7 @@ public class ResourceService {
     //  Get one
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public ResourceResponse getById(Long id) {
         return ResourceResponse.from(findOrThrow(id));
     }

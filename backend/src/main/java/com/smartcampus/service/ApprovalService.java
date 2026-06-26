@@ -31,6 +31,7 @@ public class ApprovalService {
     //  Stats
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public ApprovalStatsResponse getStats(String reviewerEmail) {
         User reviewer = findUserOrThrow(reviewerEmail);
 
@@ -64,6 +65,7 @@ public class ApprovalService {
     //  Queue — HOD
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<ApprovalQueueItem> getHodQueue(String hodEmail, int page, int size) {
         User hod = findUserOrThrow(hodEmail);
         if (hod.getRole() != Role.HOD && hod.getRole() != Role.ADMIN)
@@ -83,6 +85,7 @@ public class ApprovalService {
     //  Queue — Admin
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<ApprovalQueueItem> getAdminQueue(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return approvalRepository.findPendingAdminQueue(pageable)
@@ -93,6 +96,7 @@ public class ApprovalService {
     //  Run validation report on a pending booking
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public ValidationReport getValidationReport(Long bookingId, String reviewerEmail) {
         Booking  booking  = findBookingOrThrow(bookingId);
         Resource resource = booking.getResource();
@@ -147,6 +151,7 @@ public class ApprovalService {
     //  History
     // ─────────────────────────────────────────────────────────────────────────
 
+    @Transactional(readOnly = true)
     public Page<ApprovalQueueItem> getReviewHistory(String reviewerEmail,
                                                      ApprovalStatus status, int page, int size) {
         User     reviewer = findUserOrThrow(reviewerEmail);

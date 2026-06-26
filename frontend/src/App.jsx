@@ -22,7 +22,7 @@ import BookingFormPage from './pages/booking/BookingFormPage';
 import MyBookingsPage  from './pages/booking/MyBookingsPage';
 
 import { getDashboardPath } from './utils/roleUtils';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
 function RootRedirect() {
   const { isAuthenticated, user } = useAuth();
@@ -32,16 +32,19 @@ function RootRedirect() {
 }
 
 function PlaceholderDashboard() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <Box sx={{ minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#F0F4FF' }}>
       <Box sx={{ textAlign:'center' }}>
         <Typography variant="h4" fontWeight={800} color="primary.main" mb={1}>
           Welcome, {user?.fullName?.split(' ')[0]}
         </Typography>
-        <Typography color="text.secondary">
+        <Typography color="text.secondary" mb={4}>
           {user?.role} Dashboard — coming in the next module
         </Typography>
+        <Button variant="outlined" color="primary" onClick={logout}>
+          Logout
+        </Button>
       </Box>
     </Box>
   );

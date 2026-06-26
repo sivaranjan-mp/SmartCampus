@@ -18,6 +18,7 @@ import ResourcePicker from '../../components/booking/ResourcePicker';
 import DynamicListField from '../../components/booking/DynamicListField';
 import PeoplePicker from '../../components/booking/PeoplePicker';
 import FileUploadField from '../../components/booking/FileUploadField';
+import Navbar from '../../components/Navbar';
 
 // ─── Section header ────────────────────────────────────────────────────────────
 function SectionHeader({ icon, label }) {
@@ -423,8 +424,9 @@ export default function BookingFormPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Navbar />
       {/* Top banner */}
-      <Box sx={{ background: 'linear-gradient(135deg,#1565C0,#0D47A1)', px: { xs: 2, sm: 4 }, py: 3 }}>
+      <Box sx={{ background: 'linear-gradient(135deg,#1565C0,#0D47A1)', px: { xs: 2, sm: 4 }, py: 3, pt: { xs: 9, sm: 10 } }}>
         <Box sx={{ maxWidth: 860, mx: 'auto' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 0.5 }}>
             <SchoolRounded sx={{ color: 'white', fontSize: 20 }} />

@@ -22,7 +22,12 @@ export const ROLE_AVATAR_BG = {
 };
 
 export const getDashboardPath = (role) => {
-  const paths = { ADMIN:'/admin/dashboard', HOD:'/hod/dashboard', FACULTY:'/faculty/dashboard', STUDENT:'/student/dashboard' };
+  const paths = { 
+    ADMIN: '/admin/dashboard', 
+    HOD: '/hod/approvals', 
+    FACULTY: '/bookings/my', 
+    STUDENT: '/bookings/my' 
+  };
   return paths[role] || '/login';
 };
 

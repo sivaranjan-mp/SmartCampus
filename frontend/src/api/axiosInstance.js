@@ -12,6 +12,16 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) config.headers.Authorization = `Bearer ${token}`;
+    
+    if (config.method === 'get') {
+      config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      config.headers['Pragma'] = 'no-cache';
+      config.headers['Expires'] = '0';
+      
+      // Also add a cache-buster param to bypass aggressive browser caching
+      config.params = { ...config.params, _t: Date.now() };
+    }
+    
     return config;
   },
   (error) => Promise.reject(error)
